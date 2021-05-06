@@ -41,7 +41,7 @@ class WelcomEmailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')->line('Thank you for using our application!');
+                    ->line('Welcom in our application')->line('Thank you for using our application!');
     }
 
     /**

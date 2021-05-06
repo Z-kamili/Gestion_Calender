@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,17 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::group(['middleware' => ['auth']],function(){
+
+
+    Route::get('/event',[EventController::class,'index']);
+    Route::post('/event/Add',[EventController::class,'store']);
+    Route::get('/event/show',[EventController::class,'show']);
+    Route::post('/event/edit/{id}',[EventController::class,'edit']);
+    Route::post('/event/update/{event}',[EventController::class,'update']);
+    Route::post('/event/delete/{id}',[EventController::class,'destroy']);
+
+});
+
+

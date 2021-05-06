@@ -7,8 +7,19 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+
+
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.css">
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/locales-all.js"></script>
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
@@ -42,5 +53,7 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script src="{{asset('js/agenda.js')}}"></script>
     </body>
 </html>
