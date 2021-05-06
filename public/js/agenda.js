@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         axios.post("http://127.0.0.1:8000/event/edit/"+info.event.id).then(
           (request)=>{ 
-            console.log(request.data[0].start);
+            console.log(new Date(request.data[0].start));
            Formulaire.description.value = request.data[0].description;
-           Formulaire.start.value = request.data[0].start;
+           Formulaire.start.value =request.data[0].start;
            Formulaire.end.value = request.data[0].end;
            Formulaire.title.value = request.data[0].title;
            Formulaire.id.value = request.data[0].id;
