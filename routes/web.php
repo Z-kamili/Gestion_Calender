@@ -19,12 +19,13 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    return view('home');
 })->name('dashboard');
 
 Route::group(['middleware' => ['auth']],function(){
 
-
+    Route::resource('Events', 'App\Http\Controllers\CalendarController');
+    Route::resource('Statistic', 'App\Http\Controllers\Gestion_StatisticController');
     Route::get('/event',[EventController::class,'index']);
     Route::post('/event/Add',[EventController::class,'store']);
     Route::get('/event/show',[EventController::class,'show']);

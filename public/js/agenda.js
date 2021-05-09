@@ -5,18 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let Formulaire = document.querySelector("#FormData");
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      local:'UK',
       headerToolbar:{
 
         left:'prev,next,today',
         center:'title',
         right:'dayGridMonth,timeGridWeek,listWeek'
       },
+      timeZone: 'local',
       dateClick:function(info){
 
+        console.log(info.date.toISOString());
+        const d = new Date();
+        const dateTimeLocalValue = (new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString()).slice(0, -1);
+        console.log(dateTimeLocalValue);
         Formulaire.reset();
-        Formulaire.start.value = info.dateStr;
-        Formulaire.end.value = info.dateStr; 
+        Formulaire.start.value = dateTimeLocalValue;
+        Formulaire.end.value = dateTimeLocalValue; 
 
         document.getElementById("event").style.display = "block";
 
@@ -25,13 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
       eventClick:function(info){
         var event = info.event;
         console.log(info.event.id);
-
-        axios.post("http://127.0.0.1:8000/event/edit/"+info.event.id).then(
+        var id = info.event.id;
+        axios.post("http://127.0.0.1:8000/event/edit/"+id).then(
           (request)=>{ 
-            console.log(new Date(request.data[0].start));
+           console.log(request.data.length);
+           const d = new Date(request.data[0].start);
+           const d_1 = new Date(request.data[0].end);
+           const dateTimeLocalValue = (new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString()).slice(0, -1);
+           const dateTimeLocalValue_fin = (new Date(d_1.getTime() - d_1.getTimezoneOffset() * 60000).toISOString()).slice(0, -1);
            Formulaire.description.value = request.data[0].description;
-           Formulaire.start.value =request.data[0].start;
-           Formulaire.end.value = request.data[0].end;
+           Formulaire.start.value =dateTimeLocalValue;
+           Formulaire.end.value = dateTimeLocalValue_fin;
            Formulaire.title.value = request.data[0].title;
            Formulaire.id.value = request.data[0].id;
            document.getElementById("event").style.display = "block";
@@ -61,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
 
     document.getElementById("btnAdd").addEventListener("click",()=>{
+      console.log("hi");
       EnvirData("http://127.0.0.1:8000/event/Add");
     });
 

@@ -7,6 +7,8 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class EventController extends Controller
 {
@@ -39,15 +41,17 @@ class EventController extends Controller
     public function store(EventValidate $request)
     {
       try{
+        $value = FacadesSession::get('calender');
         $event = new Event();
         $event->title = $request->title;
         $event->description = $request->description;
         $event->start = $request->start;
         $event->end = $request->end;
         $event->user_id = Auth::id();
+        $event->calendar_id = $value;
         $event->save();
       }catch(\Exception $e){
-        dd($e);
+     return response()->json($e);
 
     }
 }
@@ -61,7 +65,9 @@ class EventController extends Controller
     public function show(Event $event)
     {
         //event
-        $event = Event::select("*")->where("user_id",Auth::id())->get();
+        $value = FacadesSession::get('calender');
+        $event = Event::select("*")->where("user_id",Auth::id())->where("calendar_id",$value)->get();
+        
         return response()->json($event);
     }
 
@@ -71,9 +77,10 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $id)
+    public function edit($id)
     {
-        $event = Event::find($id);
+        
+        $event = Event::select("*")->where("id",$id)->get();
         return response()->json($event);
     }
 
