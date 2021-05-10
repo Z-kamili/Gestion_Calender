@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
       timeZone: 'local',
       dateClick:function(info){
 
-        console.log(info.date.toISOString());
-        const d = new Date();
+        console.log(info.date);
+        const d = new Date(info.date);
         const dateTimeLocalValue = (new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString()).slice(0, -1);
         console.log(dateTimeLocalValue);
         Formulaire.reset();
